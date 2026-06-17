@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
 </head>
 <body class="min-h-screen bg-gray-100">
     <nav class="bg-white shadow-sm border-b border-gray-200">
@@ -28,5 +29,6 @@
     <main class="py-10">
         {{ $slot }}
     </main>
+    @livewireScripts
 </body>
 </html>
