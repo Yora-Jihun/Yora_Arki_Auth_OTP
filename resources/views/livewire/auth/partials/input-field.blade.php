@@ -1,15 +1,30 @@
-<div class="mb-6">
-    <label for="{{ $name }}" class="block text-sm font-medium text-gray-700">{{ $label }}</label>
+@props([
+    'name',
+    'label',
+    'type' => 'text',
+    'placeholder' => '',
+    'autocomplete' => null,
+])
+
+<div class="space-y-2">
+    <label for="{{ $name }}" class="block text-sm font-medium text-slate-700">
+        {{ $label }}
+    </label>
+
     <input
-        type="{{ $type ?? 'text' }}"
+        type="{{ $type }}"
         id="{{ $name }}"
         name="{{ $name }}"
         value="{{ old($name, $value ?? '') }}"
-        class="block w-full border-0 border-b-2 border-gray-300 bg-transparent py-2 text-gray-900 placeholder-gray-500 focus:border-indigo-500 focus:outline-none focus:ring-0 sm:text-sm"
+        placeholder="{{ $placeholder }}"
+        @if($autocomplete)
+            autocomplete="{{ $autocomplete }}"
+        @endif
         {{ $attributes }}
-        placeholder="{{ $placeholder ?? '' }}"
+        class="{{ $attributes->get('class', 'block w-full border border-gray-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 outline-none transition duration-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10') }}"
     >
+
     @error($name)
-        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+        <p class="text-sm text-red-600">{{ $message }}</p>
     @enderror
 </div>

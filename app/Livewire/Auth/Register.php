@@ -40,7 +40,7 @@ class Register extends Component
             'middle_name' => ['nullable', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
             'suffix' => ['nullable', 'string', 'max:10'],
-            'email' => ['required', 'string', 'email', 'max:255'],
+            'email' => ['required', 'string', 'email:rfc,dns', 'max:255'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ];
     }

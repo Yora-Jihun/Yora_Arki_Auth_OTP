@@ -6,8 +6,8 @@
     <title>Auth</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="min-h-screen bg-gray-50 flex items-center justify-center">
-    <div class="w-full max-w-md">
+<body class="min-h-screen bg-slate-100 p-4 sm:p-6">
+    <div class="mx-auto flex min-h-[calc(100vh-3rem)] w-full max-w-7xl items-center justify-center transition-all duration-300 ease-out" wire:transition>
         {{ $slot }}
     </div>
 </body>
