@@ -13,7 +13,7 @@
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
                     <h1 class="text-xl font-bold text-gray-900">Dashboard</h1>
-                </div>
+                </div>  
                 <div class="flex items-center space-x-4">
                     <span class="text-sm text-gray-700">{{ auth()->user()->fullname }}</span>
                     <form method="POST" action="{{ route('logout') }}">
