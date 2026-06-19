@@ -124,7 +124,7 @@ class ProfileSettings extends Component
             $this->avatar = null;
         }
 
-        session()->flash('status', 'Profile updated');
+        session()->flash('status', 'Profile updated successfully.');
         $this->redirect(route('profile-settings'), navigate: true);
     }
 

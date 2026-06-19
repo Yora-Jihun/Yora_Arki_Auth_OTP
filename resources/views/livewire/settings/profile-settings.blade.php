@@ -6,6 +6,11 @@
         </div>
     </div>
 
+    @include('partials.alerts', [
+        'type' => 'success',
+        'message' => session('status'),
+    ])
+
     <div class="bg-white border border-gray-100 p-6">
         <div class="flex items-center gap-5 mb-6">
             <label for="avatarInput" class="cursor-pointer relative group flex-shrink-0">

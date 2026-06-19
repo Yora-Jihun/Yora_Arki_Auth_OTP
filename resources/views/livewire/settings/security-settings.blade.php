@@ -9,17 +9,19 @@
     <div class="bg-white border border-gray-100 p-6">
         <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Change Password</h3>
 
-        @if (session('status'))
-            <div class="mb-4 border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700 rounded">
-                {{ session('status') }}
-            </div>
-        @endif
+        @include('partials.alerts', [
+            'type' => 'success',
+            'message' => session('status'),
+            'class' => 'mb-4',
+        ])
 
         <form wire:submit="submit" class="space-y-4 max-w-md">
             @error('auth')
-                <div class="border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 rounded">
-                    {{ $message }}
-                </div>
+                @include('partials.alerts', [
+                    'type' => 'error',
+                    'message' => $message,
+                    'class' => 'mb-4',
+                ])
             @enderror
 
             <div>

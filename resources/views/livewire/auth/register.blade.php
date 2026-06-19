@@ -25,9 +25,11 @@
 
                     <form wire:submit="submit" class="space-y-4">
                         @error('auth')
-                            <div class="border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-                                {{ $message }}
-                            </div>
+                            @include('partials.alerts', [
+                                'type' => 'error',
+                                'message' => $message,
+                                'class' => 'mb-4',
+                            ])
                         @enderror
 
                         <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
