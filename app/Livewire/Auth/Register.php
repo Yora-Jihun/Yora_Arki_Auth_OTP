@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Auth;
 
-use App\Services\AuthService;
+use App\Services\OtpService;
 use App\Support\EmailFormatter;
 use Illuminate\View\View;
 use Livewire\Component;
@@ -23,11 +23,11 @@ class Register extends Component
 
     public string $password_confirmation = '';
 
-    private AuthService $authService;
+    private OtpService $otpService;
 
-    public function boot(AuthService $authService): void
+    public function boot(OtpService $otpService): void
     {
-        $this->authService = $authService;
+        $this->otpService = $otpService;
     }
 
     /**
@@ -40,7 +40,7 @@ class Register extends Component
             'middle_name' => ['nullable', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
             'suffix' => ['nullable', 'string', 'max:10'],
-            'email' => ['required', 'string', 'email', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ];
     }
@@ -51,18 +51,12 @@ class Register extends Component
 
         $data = $this->validate();
 
-        $user = $this->authService->register([
-            'first_name' => $data['first_name'],
-            'middle_name' => $data['middle_name'] ?: null,
-            'last_name' => $data['last_name'],
-            'suffix' => $data['suffix'] ?: null,
-            'email' => $data['email'],
-            'password' => $data['password'],
-        ]);
+        $this->otpService->sendForRegistration($data['email']);
 
-        auth()->login($user);
+        session()->put('registration_data', $data);
+        session()->put('registration_email', $data['email']);
 
-        $this->redirect(route('dashboard'));
+        $this->redirect(route('register.verify'));
     }
 
     public function render(): View

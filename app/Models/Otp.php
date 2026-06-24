@@ -1,0 +1,62 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
+
+/**
+ * @property int $id
+ * @property string $email
+ * @property string $otp
+ * @property Carbon $expires_at
+ * @property string $type
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder<Otp> ofType(string $type)
+ * @method static \Illuminate\Database\Eloquent\Builder<Otp> expired()
+ */
+class Otp extends Model
+{
+    protected $fillable = ['email', 'otp', 'expires_at', 'type'];
+
+    protected $casts = [
+        'expires_at' => 'datetime',
+    ];
+
+    public static function generate(string $email, string $type = 'registration'): self
+    {
+        return self::updateOrCreate(
+            ['email' => $email, 'type' => $type],
+            [
+                'otp' => (string) random_int(100000, 999999),
+                'expires_at' => now()->addMinutes(10),
+            ]
+        );
+    }
+
+    public function isValid(string $otp): bool
+    {
+        return $this->otp === $otp && $this->expires_at->isFuture();
+    }
+
+    /**
+     * @param  Builder<Otp>  $query
+     * @return Builder<Otp>
+     */
+    public function scopeExpired(Builder $query): Builder
+    {
+        return $query->where('expires_at', '<', now());
+    }
+
+    /**
+     * @param  Builder<Otp>  $query
+     * @return Builder<Otp>
+     */
+    public function scopeOfType(Builder $query, string $type): Builder
+    {
+        return $query->where('type', $type);
+    }
+}

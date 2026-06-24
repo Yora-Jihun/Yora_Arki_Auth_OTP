@@ -14,11 +14,16 @@ class AuthService
     /**
      * @param  array{first_name: string, middle_name: string|null, last_name: string, suffix: string|null, email: string, password: string}  $data
      */
-    public function register(array $data): User
+    public function register(array $data, bool $verified = false): User
     {
         $user = new User(Arr::except($data, ['password']));
         $user->password = $data['password'];
         $user->setAttribute('fullname', $user->full_name);
+
+        if ($verified) {
+            $user->email_verified_at = \Illuminate\Support\Carbon::now();
+        }
+
         $user->save();
 
         return $user;
