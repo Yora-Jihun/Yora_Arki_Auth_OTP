@@ -3,10 +3,11 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class OtpVerification extends Notification
+class OtpVerification extends Notification implements ShouldQueue 
 {
     use Queueable;
 
@@ -30,3 +31,5 @@ class OtpVerification extends Notification
             ->salutation('— '.config('app.name'));
     }
 }
+
+
