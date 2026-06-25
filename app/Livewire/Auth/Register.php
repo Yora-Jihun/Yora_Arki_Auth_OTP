@@ -4,6 +4,8 @@ namespace App\Livewire\Auth;
 
 use App\Services\OtpService;
 use App\Support\EmailFormatter;
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Support\Facades\Http;
 use Illuminate\View\View;
 use Livewire\Component;
 
@@ -22,6 +24,8 @@ class Register extends Component
     public string $password = '';
 
     public string $password_confirmation = '';
+
+    public string $turnstile_token = '';
 
     private OtpService $otpService;
 
@@ -42,6 +46,20 @@ class Register extends Component
             'suffix' => ['nullable', 'string', 'max:10'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            // 'turnstile_token' => ['required', function (string $attribute, mixed $value, \Closure $fail): void {
+            //     try {
+            //         $response = Http::asForm()->post('https://challenges.cloudflare.com/turnstile/v0/siteverify', [
+            //             'secret' => config('services.turnstile.secret_key'),
+            //             'response' => $value,
+            //             'remoteip' => request()->ip(),
+            //         ]);
+            //         if (! $response->json('success')) {
+            //             $fail('The security check failed. Please try again.');
+            //         }
+            //     } catch (ConnectionException) {
+            //         $fail('Unable to verify security check. Please try again later.');
+            //     }
+            // }],
         ];
     }
 

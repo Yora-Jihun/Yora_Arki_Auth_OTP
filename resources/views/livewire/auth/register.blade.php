@@ -124,21 +124,21 @@
                             required
                         />
 
+                        {{-- <div class="space-y-2">
+                            <label class="block text-sm font-medium text-slate-700">Security Check</label>
+                            <div class="cf-turnstile" data-sitekey="{{ config('services.turnstile.site_key') }}" data-theme="light" data-callback="onTurnstileSuccess"></div>
+                            <input type="hidden" name="turnstile_token" wire:model="turnstile_token" id="turnstile_token">
+                            @error('turnstile_token')
+                                <p class="text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div> --}}
+
                         <button
                             type="submit"
                             class="inline-flex w-full items-center justify-center bg-[#0A5FFF] px-4 py-3.5 text-sm font-semibold text-white transition duration-200 hover:bg-[#0757E8] focus:outline-none focus:ring-4 focus:ring-blue-500/20"
                             >
                             Create account
                         </button>
-
-                        <div class="relative">
-                            <div class="absolute inset-0 flex items-center">
-                                <div class="w-full border-t border-slate-300"></div>
-                            </div>
-                            <div class="relative flex justify-center text-sm">
-                                <span class="bg-white px-2 text-slate-500">or</span>
-                            </div>
-                        </div>
 
                         <button
                             type="button"
@@ -165,3 +165,11 @@
         </div>
     </div>
 </div>
+
+{{-- <script>
+function onTurnstileSuccess(token) {
+    const input = document.getElementById('turnstile_token');
+    input.value = token;
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+}
+</script> --}}

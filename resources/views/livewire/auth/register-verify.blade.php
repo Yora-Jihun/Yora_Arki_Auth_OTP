@@ -1,4 +1,4 @@
-<div class="w-full">
+<div class="w-full" wire:poll.1s="tick">
     <div class="overflow-hidden bg-white shadow-2xl shadow-slate-200/70 ring-1 ring-slate-900/5 transition-all duration-300 ease-out">
         <div class="grid min-h-screen grid-cols-1 lg:grid-cols-2 lg:min-h-0">
             @include('livewire.auth.partials.side-landing')
@@ -59,9 +59,15 @@
                             <button type="button" wire:click="goBack" class="text-slate-600 hover:underline">
                                 Change Email
                             </button>
-                            <button type="button" wire:click="resend" class="text-[#0A5FFF] hover:underline">
-                                Resend Code
-                            </button>
+                            @if($cooldown > 0)
+                                <span class="text-slate-400 cursor-not-allowed">
+                                    Resend Code in {{ $cooldown }}s
+                                </span>
+                            @else
+                                <button type="button" wire:click="resend" class="text-[#0A5FFF] hover:underline">
+                                    Resend Code
+                                </button>
+                            @endif
                         </div>
                     </form>
                 </div>

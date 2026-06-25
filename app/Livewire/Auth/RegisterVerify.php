@@ -19,6 +19,8 @@ class RegisterVerify extends Component
 
     public string $otp = '';
 
+    public int $cooldown = 0;
+
     private AuthService $authService;
 
     private OtpService $otpService;
@@ -46,6 +48,8 @@ class RegisterVerify extends Component
         if (! $this->email || ! session()->has('registration_data')) {
             $this->redirect(route('register'));
         }
+
+        $this->cooldown = $this->otpService->getResendCooldownRemaining($this->email);
     }
 
     public function updatedOtp(): void
@@ -59,7 +63,7 @@ class RegisterVerify extends Component
 
         $registrationData = session()->get('registration_data');
 
-        if (! $this->otpService->verify($this->email, $this->otp)) {
+        if (! $this->otpService->verify($this->email, $this->otp, 'registration', request()->ip())) {
             $this->addError('otp', 'Invalid or expired verification code.');
             $this->otp = '';
 
@@ -87,9 +91,17 @@ class RegisterVerify extends Component
         try {
             $this->otpService->sendForRegistration($this->email);
             $this->otp = '';
+            $this->cooldown = 60;
             $this->dispatch('otp-resended');
         } catch (ValidationException $e) {
             $this->addError('otp', $e->getMessage());
+        }
+    }
+
+    public function tick(): void
+    {
+        if ($this->cooldown > 0) {
+            $this->cooldown--;
         }
     }
 
