@@ -36,7 +36,7 @@ class OtpService
         $otp = Otp::generate($email, $type);
 
         Notification::route('mail', $email)
-            ->notify(new OtpVerification($otp->otp));
+            ->notify(new OtpVerification($otp->otp, $type));
 
         Cache::put("otp_last_sent_{$email}_{$type}", now()->toDateTimeString(), self::RESEND_COOLDOWN_SECONDS);
 

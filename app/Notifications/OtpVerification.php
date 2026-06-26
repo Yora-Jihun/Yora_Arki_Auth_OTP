@@ -11,7 +11,10 @@ class OtpVerification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    public function __construct(public string $otp) {}
+    public function __construct(
+        public string $otp,
+        public string $type = 'registration'
+    ) {}
 
     /**
      * @return array<int, string>
@@ -24,10 +27,20 @@ class OtpVerification extends Notification implements ShouldQueue
     public function toMail(mixed $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Your Verification Code - '.config('app.name'))
-            ->greeting('Hello!')
-            ->line("Your verification code is: **{$this->otp}**")
-            ->line('This code will expire in 10 minutes.')
-            ->salutation('— '.config('app.name'));
+            ->subject($this->getSubject())
+            ->markdown('mail.otp.'.$this->type, [
+                'otp' => $this->otp,
+                'appName' => config('app.name'),
+            ]);
+    }
+
+    private function getSubject(): string
+    {
+        return match ($this->type) {
+            'registration' => 'Verify Your Email - '.config('app.name'),
+            'password_reset' => 'Password Reset Request - '.config('app.name'),
+            'account_deletion' => 'Account Deletion Confirmation - '.config('app.name'),
+            default => 'Your Verification Code - '.config('app.name'),
+        };
     }
 }
