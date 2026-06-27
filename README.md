@@ -1,4 +1,4 @@
-# Yora Jihun - Local Auth Arki
+# Yora Jihun - Local Auth Arki 
 
 A Laravel-based authentication starter built with my own architecture, designed for developers who want to start local and scale their own application.
 
@@ -21,6 +21,7 @@ A Laravel-based authentication starter built with my own architecture, designed 
 ## Features
 
 - Register & Login with remember me
+- One-Time Password (OTP) verification for registration, password reset, and account deletion
 - Dashboard with sidebar navigation
 - Profile Settings (name, email, avatar)
 - Security Settings (change password, delete account)
